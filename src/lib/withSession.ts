@@ -1,15 +1,22 @@
-import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   NextApiHandler,
 } from 'next';
+import getConfig from 'next/config';
+import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
+
+const { serverRuntimeConfig } = getConfig();
+
+const secureCookies = serverRuntimeConfig.INSECURE_COOKIES !== undefined
+  ? !serverRuntimeConfig.INSECURE_COOKIES
+  : process.env.NODE_ENV === 'production';
 
 const sessionOptions = {
-  cookieName: 'wgdash_user',
-  password: process.env.COOKIE_PASSWORD ?? 'developmentdevelopmentdevelopment',
+  cookieName: 'user',
+  password: serverRuntimeConfig.COOKIE_PASSWORD,
   cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: secureCookies,
   },
 };
 
