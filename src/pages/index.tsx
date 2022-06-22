@@ -148,6 +148,11 @@ export default function Index({ user }: IndexProps) {
                 <span className="chip ~neutral mr-2">
                   Peer
                 </span>
+                {!peer.endpoint && (
+                  <span className="chip ~critical">
+                    Down
+                  </span>
+                )}
                 {peer.hasPresharedKey
                   ? (
                     <span className="chip ~positive">

@@ -191,9 +191,9 @@ function parseAllowedIp(data: Buffer): string {
 
 function parseWgPeer(peerinfo: NetlinkAttribute): WireguardPeer {
   const result: WireguardPeer = {
-    publicKey: '<unknown>',
+    publicKey: '',
     hasPresharedKey: false,
-    endpoint: '<unknown>',
+    endpoint: '',
     keepAlive: 0,
     lastHandshake: new Date(0).toISOString(),
     rxBytes: 0,
