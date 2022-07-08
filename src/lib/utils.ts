@@ -1,3 +1,5 @@
+import { Temporal } from '@js-temporal/polyfill';
+
 export function classNames(...args: any[]): string {
   const classes = [];
 
@@ -56,4 +58,59 @@ export async function apiGet(url: string): Promise<any> {
       console.log(err);
       return Promise.resolve({});
     });
+}
+
+export function formatTraffic(b: number): string {
+  if (b < 1024 * 1024) {
+    return `${(b / 1024).toFixed(2)} KiB`;
+  }
+
+  if (b < 1024 * 1024 * 1024) {
+    return `${(b / 1024 / 1024).toFixed(2)} MiB`;
+  }
+
+  return `${(b / 1024 / 1024 / 1024).toFixed(2)} GiB`;
+}
+
+export function formatTimeDelta(date: string): string {
+  let result = '';
+
+  try {
+    const from = Temporal.Instant.from(date).toZonedDateTimeISO(Temporal.Now.timeZone());
+    const delta = Temporal.Now.zonedDateTimeISO().since(from, {
+      largestUnit: 'day',
+      smallestUnit: 'second',
+    });
+
+    if (delta.days > 0) {
+      result += `${delta.days}d `;
+    }
+
+    if (delta.hours > 0) {
+      result += `${delta.hours}h `;
+    }
+
+    if (delta.minutes > 0) {
+      result += `${delta.minutes}min `;
+    }
+
+    if (delta.seconds > 0) {
+      result += `${delta.seconds}s `;
+    }
+
+    // return delta.toLocaleString('en-US', {
+    //   hours: 'narrow',
+    //   minutes: 'narrow',
+    //   seconds: 'narrow',
+    // });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+  }
+
+  return result;
+}
+
+export function formatKeepAlive(keepAlive: number): string {
+  return keepAlive !== 0 ? `${keepAlive}s` : 'disabled';
 }
