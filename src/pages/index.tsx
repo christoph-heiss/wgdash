@@ -145,21 +145,21 @@ export default function Index({ user }: IndexProps) {
 
             {wgif.peers.map((peer) => (
               <div key={peer.publicKey} className="card">
-                <span className="chip ~neutral mr-2">
+                <span className="chip ~neutral">
                   Peer
                 </span>
                 {!peer.endpoint && (
-                  <span className="chip ~critical">
+                  <span className="chip ~critical ml-2">
                     Down
                   </span>
                 )}
                 {peer.hasPresharedKey
                   ? (
-                    <span className="chip ~positive">
+                    <span className="chip ~positive ml-2">
                       Has preshared key
                     </span>
                   ) : (
-                    <span className="chip ~critical">
+                    <span className="chip ~critical ml-2">
                       No preshared key
                     </span>
                   )}
