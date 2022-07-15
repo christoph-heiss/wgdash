@@ -2,7 +2,7 @@ version: '3'
 
 services:
   wgdash:
-    image: ghcr.io/christoph-heiss/wgdash:0.1.0
+    image: ghcr.io/christoph-heiss/wgdash:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN

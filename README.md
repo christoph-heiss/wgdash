@@ -1,34 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# wgdash
 
-## Getting Started
+[![Lint and build](https://github.com/christoph-heiss/wgdash/actions/workflows/build.yml/badge.svg)](https://github.com/christoph-heiss/wgdash/actions/workflows/build.yml)
 
-First, run the development server:
+is a simple yet effective tool for monitoring your WireGuard connections (on Linux).
 
+## Getting started
+
+To best way to quickly get wgdash up and running is by using `docker compose`.
 ```bash
+mkdir wgdash && cd wgdash
+cat <<EOF >docker-compose.yml
+version: '3'
+
+services:
+  wgdash:
+    image: ghcr.io/christoph-heiss/wgdash:latest
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    network_mode: host
+EOF
+docker compose up -d
+```
+This will use the latest CD-built image.
+
+## Development
+
+To run it directly on your machine, without a Docker container:
+```bash
+npm install
 npm run dev
-# or
-yarn dev
+```
+To allow wgdash to actually use the Linux' kernel
+[netlink](https://man7.org/linux/man-pages/man7/netlink.7.html) interface, it
+generally needs the have `CAP_NET_ADMIN` set on the node binary.
+This can be done using
+```bash
+sudo setcap cap_net_admin+eip $(which node)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## License
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Licensed under MIT license ([LICENSE](LICENSE) or https://opensource.org/licenses/MIT).
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Contribution
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you shall be licensed by MIT license as above, without any
+additional terms or conditions.
